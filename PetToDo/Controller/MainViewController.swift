@@ -9,59 +9,84 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    // TableView 만들기
     private var mainTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
         return tableView
     }()
-    
-    
-    //var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
         configureUI()
         addSubView()
         autoLayout()
-        
-        self.mainTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-//        self.tableView.dataSource = self
-//        self.tableView.delegate = self
-//        self.view.addSubview(tableView)
-        
-        
     }
 }
 
 extension MainViewController {
     
+    // UI 구성
     func configureUI() {
+        
+        // view 배경색
         view.backgroundColor = .white
         
+        // 네비게이션 LargeTitle 활성화 및 title 입력
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "PetToDo"
         
+        let createButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(moveCreateVC))
+        createButton.tintColor = UIColor(named: "MainColor")
+        
+        let photoButton = UIBarButtonItem(image: UIImage(systemName: "photo.on.rectangle.angled"), style: .plain, target: self, action: #selector(movePhotoVC))
+        photoButton.tintColor = UIColor(named: "MainColor")
+        
+        navigationItem.rightBarButtonItems = [ createButton, photoButton ]
+        
+        // TableView 각 줄 높이
+        mainTableView.rowHeight = 45
+        
         mainTableView.delegate = self
         mainTableView.dataSource = self
-        
-        mainTableView.rowHeight = 100
     }
     
+    // view에 TableView 추가
     func addSubView() {
         view.addSubview(mainTableView)
     }
     
+    // TableView에 AutoLayout 추가
     func autoLayout() {
-        let guide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            mainTableView.topAnchor.constraint(equalTo: guide.topAnchor),
-            mainTableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-            mainTableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-            mainTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            mainTableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            mainTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            mainTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            mainTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            mainTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            mainTableView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
     }
+    
+    // 메모 생성 페이지 이동
+    @objc func moveCreateVC() {
+        CreateViewController()
+        guard let moveCreateVC = self.storyboard?.instantiateViewController(withIdentifier: "CreateViewController") as? CreateViewController else { return }
+        navigationController?.pushViewController(moveCreateVC, animated: true)
+        print("test")
+    }
+
+    // 동물 사진 페이지 이동
+    @objc func movePhotoVC() {
+        guard let movePhotoVC = self.storyboard?.instantiateViewController(withIdentifier: "PhotoViewController") as? PhotoViewController else { return }
+        navigationController?.pushViewController(movePhotoVC, animated: true)
+        print("test")
+    }
+    
+    
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
