@@ -10,10 +10,9 @@ import UIKit
 class MainTableViewCell: UITableViewCell {
     
     // Cell 식별자
+    // MainTableViewCell 클래스의 인스턴스를 생성하지 않고도 identifier에 접근할 수 있도록 static 사용
     static let identifier = "MainTableViewCell"
 
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -42,7 +41,6 @@ class MainTableViewCell: UITableViewCell {
         button.tintColor = UIColor(named: "MainColor")
         button.configuration = UIButton.Configuration.plain()
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(button.self, action: #selector(checkButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -50,10 +48,12 @@ class MainTableViewCell: UITableViewCell {
         if checkButton.isSelected {
             checkButton.setImage(UIImage(systemName: "square"), for: .normal)
             checkButton.isSelected = false
+            memoLabel.attributedText = NSAttributedString(string: memoLabel.text ?? "")
         }
         else {
             checkButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
             checkButton.isSelected = true
+            memoLabel.attributedText = memoLabel.text?.strikeThrough()
         }
     }
     

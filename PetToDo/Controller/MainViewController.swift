@@ -9,11 +9,15 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    let createVC = CreateViewController()
+    let photoVC = PhotoViewController()
+    
     // TableView 만들기
     private var mainTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
+        tableView.separatorInset.left = 15
         return tableView
     }()
 
@@ -30,37 +34,36 @@ class MainViewController: UIViewController {
 extension MainViewController {
     
     // UI 구성
-    func configureUI() {
+    private func configureUI() {
         
         // view 배경색
         view.backgroundColor = .white
         
         // 네비게이션 LargeTitle 활성화 및 title 입력
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.view.tintColor = UIColor(named: "MainColor")
         navigationItem.title = "PetToDo"
         
         let createButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(moveCreateVC))
-        createButton.tintColor = UIColor(named: "MainColor")
         
         let photoButton = UIBarButtonItem(image: UIImage(systemName: "photo.on.rectangle.angled"), style: .plain, target: self, action: #selector(movePhotoVC))
-        photoButton.tintColor = UIColor(named: "MainColor")
         
         navigationItem.rightBarButtonItems = [ createButton, photoButton ]
         
         // TableView 각 줄 높이
-        mainTableView.rowHeight = 45
+        mainTableView.rowHeight = 44
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
     }
     
     // view에 TableView 추가
-    func addSubView() {
+    private func addSubView() {
         view.addSubview(mainTableView)
     }
     
     // TableView에 AutoLayout 추가
-    func autoLayout() {
+    private func autoLayout() {
         NSLayoutConstraint.activate([
             mainTableView.topAnchor.constraint(equalTo: self.view.topAnchor),
             mainTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
@@ -73,17 +76,12 @@ extension MainViewController {
     
     // 메모 생성 페이지 이동
     @objc func moveCreateVC() {
-        CreateViewController()
-        guard let moveCreateVC = self.storyboard?.instantiateViewController(withIdentifier: "CreateViewController") as? CreateViewController else { return }
-        navigationController?.pushViewController(moveCreateVC, animated: true)
-        print("test")
+        navigationController?.pushViewController(createVC, animated: true)
     }
 
     // 동물 사진 페이지 이동
     @objc func movePhotoVC() {
-        guard let movePhotoVC = self.storyboard?.instantiateViewController(withIdentifier: "PhotoViewController") as? PhotoViewController else { return }
-        navigationController?.pushViewController(movePhotoVC, animated: true)
-        print("test")
+        navigationController?.pushViewController(photoVC, animated: true)
     }
     
     

@@ -14,7 +14,7 @@ class CreateViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.white
     }
 
 }
