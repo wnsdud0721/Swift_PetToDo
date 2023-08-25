@@ -17,7 +17,9 @@ class MainViewController: UIViewController {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
-        tableView.separatorInset.left = 15
+        
+        // 왼쪽 공백 없애기
+        tableView.separatorInset.left = 0
         return tableView
     }()
 

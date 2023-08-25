@@ -37,7 +37,8 @@ class MainTableViewCell: UITableViewCell {
     
     let checkButton: UIButton = {
        let button = UIButton()
-        button.setImage(UIImage(systemName: "square"), for: .normal)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
+        button.setImage(UIImage(systemName: "square", withConfiguration: imageConfig), for: .normal)
         button.tintColor = UIColor(named: "MainColor")
         button.configuration = UIButton.Configuration.plain()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -45,13 +46,14 @@ class MainTableViewCell: UITableViewCell {
     }()
     
     @objc func checkButtonTapped() {
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
         if checkButton.isSelected {
-            checkButton.setImage(UIImage(systemName: "square"), for: .normal)
+            checkButton.setImage(UIImage(systemName: "square", withConfiguration: imageConfig), for: .normal)
             checkButton.isSelected = false
             memoLabel.attributedText = NSAttributedString(string: memoLabel.text ?? "")
         }
         else {
-            checkButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+            checkButton.setImage(UIImage(systemName: "checkmark.square.fill", withConfiguration: imageConfig), for: .normal)
             checkButton.isSelected = true
             memoLabel.attributedText = memoLabel.text?.strikeThrough()
         }
