@@ -8,26 +8,21 @@
 import Foundation
 import UIKit
 
-extension UIImage {
-    func resize(targetSize: CGSize) -> UIImage {
-        let size = self.size
-
-        let widthRatio = targetSize.width / size.width
-        let heightRatio = targetSize.height / size.height
-
-        let newSize: CGSize
-        if widthRatio > heightRatio {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
+extension UIImageView {
+    func loadImage(url: URL) {
+        DispatchQueue.global().async {
+            [weak self] in
+            if let data = try? Data(contentsOf: url){
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
         }
-
-        let renderer = UIGraphicsImageRenderer(size: newSize)
-        let resizedImage = renderer.image { _ in
-            self.draw(in: CGRect(origin: .zero, size: newSize))
-        }
-
-        return resizedImage
     }
 }
 
+struct CatImage: Decodable {
+    let url: String
+}

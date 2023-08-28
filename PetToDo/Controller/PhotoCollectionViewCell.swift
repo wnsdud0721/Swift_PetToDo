@@ -13,11 +13,10 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     static let identifier = "PhotoCollectionViewCell"
     
     // Cell에 UIImageView 추가
-    private let animalImageView: UIImageView = {
+    let animalImageView: UIImageView = {
         var imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .cyan
         return imageView
     }()
     
@@ -40,8 +39,12 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             animalImageView.widthAnchor.constraint(equalToConstant: contentView.frame.width),
             animalImageView.heightAnchor.constraint(equalToConstant: contentView.frame.height),
+            animalImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            animalImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            animalImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             animalImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            animalImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            animalImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            animalImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
 }

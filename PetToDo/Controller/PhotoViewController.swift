@@ -9,6 +9,8 @@ import UIKit
 
 class PhotoViewController: UIViewController {
     
+    let url = URL(string: "https://api.thecatapi.com/v1/images/search")
+    
     // CollectionView 만들기
     var photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -77,6 +79,43 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
+        
+        // 이미지를 가져오려는 URL
+        let imageURLString = "https://api.thecatapi.com/v1/images/search?limit=10"
+        
+        // URLSession을 이용하여 API로부터 데이터를 가져옴
+        URLSession.shared.dataTask(with: URL(string: imageURLString)!) { data, response, error in
+            if let error = error {
+                print("Error fetching data: \(error)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            do {
+                // JSON 데이터를 CatImage 모델로 디코딩
+                let images = try JSONDecoder().decode([CatImage].self, from: data)
+                
+                // 이미지 URL을 가져와 이미지 데이터를 다운로드
+                if let firstImageURL = images.first?.url, let imageURL = URL(string: firstImageURL) {
+                    URLSession.shared.dataTask(with: imageURL) { imageData, _, _ in
+                        if let imageData = imageData, let image = UIImage(data: imageData) {
+                            
+                            // 다운로드한 이미지를 메인 스레드에서 셀의 이미지 뷰에 할당
+                            DispatchQueue.main.async {
+                                cell.animalImageView.image = image
+                            }
+                        }
+                    }.resume()
+                }
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }.resume()
+        
         return cell
     }
     
