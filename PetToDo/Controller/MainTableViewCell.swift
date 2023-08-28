@@ -27,7 +27,7 @@ class MainTableViewCell: UITableViewCell {
     
     // Cell에 UILabel 추가
     let memoLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "오늘 할 일"
         label.font = UIFont(name: "Apple SD Gothic Neo", size: 15)
         label.textColor = UIColor.black
@@ -36,7 +36,7 @@ class MainTableViewCell: UITableViewCell {
     }()
     
     let checkButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
         button.setImage(UIImage(systemName: "square", withConfiguration: imageConfig), for: .normal)
         button.tintColor = UIColor(named: "MainColor")
@@ -74,13 +74,13 @@ class MainTableViewCell: UITableViewCell {
     }
     
     // TableView의 경우, contentView 사용
-    func addContentView() {
+    private func addContentView() {
         contentView.addSubview(checkButton)
         contentView.addSubview(memoLabel)
     }
     
     // Cell 객체 autoLayout
-    func autoLayout() {
+    private func autoLayout() {
         let margin: CGFloat = 8
         NSLayoutConstraint.activate([
             checkButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),

@@ -8,6 +8,16 @@
 import UIKit
 
 class PhotoViewController: UIViewController {
+    
+    // CollectionView 만들기
+    var photoCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        return collectionView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,6 +25,8 @@ class PhotoViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         configureUI()
+        addSubView()
+        autoLayout()
     }
 }
 
@@ -30,9 +42,61 @@ extension PhotoViewController {
         navigationController?.view.tintColor = UIColor(named: "MainColor")
         navigationItem.title = "사진모음"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(moveBackMainVC))
+        
+        photoCollectionView.delegate = self
+        photoCollectionView.dataSource = self
     }
     
     @objc func moveBackMainVC() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    // view에 CollectionView 추가
+    private func addSubView() {
+        view.addSubview(photoCollectionView)
+    }
+    
+    // CollectionView에 AutoLayout 추가
+    private func autoLayout() {
+        NSLayoutConstraint.activate([
+            photoCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            photoCollectionView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            photoCollectionView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        ])
+    }
+    
+}
+
+extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
+        return cell
+    }
+    
+    
+}
+
+extension PhotoViewController: UICollectionViewDelegateFlowLayout {
+    
+    // CollectionView Cell의 사이즈
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (collectionView.bounds.width - 3)/3, height: (collectionView.bounds.width - 3)/3)
+    }
+    
+    // 수평
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.5
+    }
+    
+    // 수직
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.5
     }
 }
