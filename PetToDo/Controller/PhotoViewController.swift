@@ -9,8 +9,6 @@ import UIKit
 
 class PhotoViewController: UIViewController {
     
-    let url = URL(string: "https://api.thecatapi.com/v1/images/search")
-    
     // CollectionView 만들기
     var photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -69,7 +67,6 @@ extension PhotoViewController {
             photoCollectionView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
     }
-    
 }
 
 extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -111,15 +108,15 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
                         }
                     }.resume()
                 }
-            } catch {
+            }
+            
+            catch {
                 print("Error decoding JSON: \(error)")
             }
         }.resume()
         
         return cell
     }
-    
-    
 }
 
 extension PhotoViewController: UICollectionViewDelegateFlowLayout {
