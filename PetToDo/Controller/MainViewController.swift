@@ -12,8 +12,10 @@ class MainViewController: UIViewController {
     let createVC = CreateViewController()
     let photoVC = PhotoViewController()
     
+    var textArray: Array<String> = []
+    
     // TableView 만들기
-    private var mainTableView: UITableView = {
+    var mainTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
@@ -30,6 +32,11 @@ class MainViewController: UIViewController {
         configureUI()
         addSubView()
         autoLayout()
+    }
+    
+    func addTextArray (text: String) {
+        textArray.append(text)
+        mainTableView.reloadData()
     }
 }
 
@@ -97,15 +104,20 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 10
+            return textArray.count
         }
         return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mainTableViewCell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as! MainTableViewCell
+        
         mainTableViewCell.selectionStyle = .none
+        
         if indexPath.section == 0 {
+            
+            mainTableViewCell.memoLabel.text = textArray[indexPath.row]
+            
             return mainTableViewCell
         }
         
@@ -114,6 +126,36 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "밥 주기"
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteMemo = UIContextualAction(style: .normal, title: nil) {
+            (action, view, completion) in
+            
+            self.textArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            completion(true)
+        }
+        
+        deleteMemo.backgroundColor = .systemRed
+        deleteMemo.image = UIImage(systemName: "trash.fill")
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteMemo])
+        
+        configuration.performsFirstActionWithFullSwipe = false
+        
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        createVC.editingMemoText = textArray[indexPath.row]
+        createVC.editingMemoIndex = indexPath.row
+        
+        createVC.isEditingMode = true
+
+        navigationController?.pushViewController(createVC, animated: true)
     }
 
 
