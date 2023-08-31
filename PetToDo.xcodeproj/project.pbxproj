@@ -19,6 +19,7 @@
 		10A82D392A9617150023A38E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10A82D372A9617150023A38E /* Main.storyboard */; };
 		10A82D3B2A9617170023A38E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10A82D3A2A9617170023A38E /* Assets.xcassets */; };
 		10A82D3E2A9617170023A38E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10A82D3C2A9617170023A38E /* LaunchScreen.storyboard */; };
+		10B9F4112A9F60540051C1C9 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B9F4102A9F60540051C1C9 /* UserDefault.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		10A82D3A2A9617170023A38E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		10A82D3D2A9617170023A38E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		10A82D3F2A9617170023A38E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10B9F4102A9F60540051C1C9 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 		105D482B2A9618F200072874 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				10B9F4102A9F60540051C1C9 /* UserDefault.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 			files = (
 				10814C822A98945B00F184F7 /* Extention_UIImage.swift in Sources */,
 				10107CF32A972A3300FA87DF /* CreateViewController.swift in Sources */,
+				10B9F4112A9F60540051C1C9 /* UserDefault.swift in Sources */,
 				10A82D362A9617150023A38E /* MainViewController.swift in Sources */,
 				10A82D322A9617150023A38E /* AppDelegate.swift in Sources */,
 				10107CF12A96E1AC00FA87DF /* MainTableViewCell.swift in Sources */,

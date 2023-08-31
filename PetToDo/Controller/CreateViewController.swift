@@ -31,6 +31,7 @@ class CreateViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         createTextView.delegate = self
+        navigationController?.delegate = self
         configureUI()
         addSubView()
         autoLayout()
@@ -96,24 +97,34 @@ extension CreateViewController {
         }
     }
     
-    // 완료 버튼 클릭 시, 이전 화면으로 이동
+    // 메모 내용 수정
     @objc func finishButtonTappedEdit() {
         navigationController?.popViewController(animated: true)
         
         if let updatedMemo = createTextView.text, !updatedMemo.isEmpty,
            let index = editingMemoIndex {
+            
+            // 해당 인덱스의 내용을 새로운 메모 내용을 수정
+            savedMemos[index] = updatedMemo
+            UserDefaults.standard.set(savedMemos, forKey: "savedMemos")
+            
             // 수정된 메모 내용을 업데이트하고 해당 셀만 리로드
-            (self.navigationController?.viewControllers.first as? MainViewController)?.textArray[index] = updatedMemo
             (self.navigationController?.viewControllers.first as? MainViewController)?.mainTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         }
+        isEditingMode = false
     }
     
-    // 완료 버튼 클릭 시, 이전 화면으로 이동
+    // 새로운 메모 작성
     @objc func finishButtonTappedNew() {
         navigationController?.popViewController(animated: true)
         
         if isTextViewEdited {
-            (self.navigationController?.viewControllers.first as? MainViewController)?.addTextArray(text: createTextView.text)
+            
+            // savedMemos라는 배열을 불러와서, 추가하기
+            savedMemos.append(createTextView.text)
+            
+            // 추가한 savedMemos를 저장하기
+            UserDefaults.standard.set(savedMemos, forKey: "savedMemos")
         }
         
     }
@@ -141,5 +152,14 @@ extension CreateViewController: UITextViewDelegate {
             createTextView.text =  "메모를 작성하세요."
             createTextView.textColor = UIColor.lightGray
         }
+    }
+}
+
+extension CreateViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+//        if createTextView.text == editingMemoText {
+//            isEditingMode = false
+//        }
+        isEditingMode = false
     }
 }

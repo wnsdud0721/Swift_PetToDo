@@ -32,6 +32,12 @@ class MainViewController: UIViewController {
         configureUI()
         addSubView()
         autoLayout()
+        mainTableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        mainTableView.reloadData()
     }
     
     func addTextArray (text: String) {
@@ -104,7 +110,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return textArray.count
+            return savedMemos.count
         }
         return 0
     }
@@ -116,7 +122,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 {
             
-            mainTableViewCell.memoLabel.text = textArray[indexPath.row]
+//            mainTableViewCell.memoLabel.text = textArray[indexPath.row]
+            mainTableViewCell.memoLabel.text = savedMemos[indexPath.row]
             
             return mainTableViewCell
         }
@@ -133,7 +140,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let deleteMemo = UIContextualAction(style: .normal, title: nil) {
             (action, view, completion) in
             
-            self.textArray.remove(at: indexPath.row)
+            savedMemos.remove(at: indexPath.row)
+            UserDefaults.standard.set(savedMemos, forKey: "savedMemos")
             tableView.deleteRows(at: [indexPath], with: .automatic)
             completion(true)
         }
@@ -150,7 +158,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        createVC.editingMemoText = textArray[indexPath.row]
+        createVC.editingMemoText = savedMemos[indexPath.row]
         createVC.editingMemoIndex = indexPath.row
         
         createVC.isEditingMode = true
