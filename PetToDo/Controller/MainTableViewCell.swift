@@ -35,6 +35,7 @@ class MainTableViewCell: UITableViewCell {
         return label
     }()
     
+    // Cell에 UIButton 추가
     let checkButton: UIButton = {
         let button = UIButton()
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
@@ -45,6 +46,7 @@ class MainTableViewCell: UITableViewCell {
         return button
     }()
     
+    // 체크버튼 눌렀을 때, 실행되는 함수
     @objc func checkButtonTapped() {
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .light)
         if checkButton.isSelected {
@@ -90,7 +92,7 @@ class MainTableViewCell: UITableViewCell {
             
             memoLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             memoLabel.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: margin),
-            memoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            memoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ])
     }
 

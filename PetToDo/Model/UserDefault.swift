@@ -8,3 +8,10 @@
 import Foundation
 
 var savedMemos = UserDefaults.standard.stringArray(forKey: "savedMemos") ?? []
+
+struct MemoItem: Codable {
+    var text: String
+    var isChecked: Bool
+}
+
+var loadedMemoItems: [MemoItem] = []

@@ -18,6 +18,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
+        imageView.backgroundColor = UIColor.lightGray
         return imageView
     }()
     

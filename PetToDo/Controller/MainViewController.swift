@@ -12,8 +12,6 @@ class MainViewController: UIViewController {
     let createVC = CreateViewController()
     let photoVC = PhotoViewController()
     
-    var textArray: Array<String> = []
-    
     // TableView 만들기
     var mainTableView: UITableView = {
         let tableView = UITableView()
@@ -39,11 +37,6 @@ class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         mainTableView.reloadData()
     }
-    
-    func addTextArray (text: String) {
-        textArray.append(text)
-        mainTableView.reloadData()
-    }
 }
 
 extension MainViewController {
@@ -59,6 +52,7 @@ extension MainViewController {
         navigationController?.view.tintColor = UIColor(named: "MainColor")
         navigationItem.title = "PetToDo"
         
+        // 네비게이션 오른쪽 버튼 생성
         let createButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(moveCreateVC))
         
         let photoButton = UIBarButtonItem(image: UIImage(systemName: "photo.on.rectangle.angled"), style: .plain, target: self, action: #selector(movePhotoVC))
@@ -91,6 +85,16 @@ extension MainViewController {
     
     // 메모 생성 페이지 이동
     @objc func moveCreateVC() {
+        
+//        let newMemo = MemoItem(text: "", isChecked: false)
+//        var savedMemoItems = UserDefaults.standard.value(forKey: "savedMemos") as? [Data] ?? []
+//        
+//        let encoder = JSONEncoder()
+//        if let encodedMemo = try? encoder.encode(newMemo) {
+//            savedMemoItems.append(encodedMemo)
+//            UserDefaults.standard.set(savedMemoItems, forKey: "savedMemos")
+//        }
+        
         navigationController?.pushViewController(createVC, animated: true)
     }
 
@@ -104,25 +108,29 @@ extension MainViewController {
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
+    // Sections 개수
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    // TableView 줄 개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return savedMemos.count
         }
         return 0
     }
-
+    
+    // TableView를 어떻게 보여줄 것인가
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mainTableViewCell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as! MainTableViewCell
         
+        // Cell 선택 시, 회색 배경 없애기
         mainTableViewCell.selectionStyle = .none
         
         if indexPath.section == 0 {
             
-//            mainTableViewCell.memoLabel.text = textArray[indexPath.row]
+            // 불러오기
             mainTableViewCell.memoLabel.text = savedMemos[indexPath.row]
             
             return mainTableViewCell
@@ -140,6 +148,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let deleteMemo = UIContextualAction(style: .normal, title: nil) {
             (action, view, completion) in
             
+            // 삭제하기
             savedMemos.remove(at: indexPath.row)
             UserDefaults.standard.set(savedMemos, forKey: "savedMemos")
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -156,6 +165,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return configuration
     }
     
+    // Cell 선택하기
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         createVC.editingMemoText = savedMemos[indexPath.row]

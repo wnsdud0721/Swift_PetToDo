@@ -18,6 +18,7 @@ class CreateViewController: UIViewController {
     var isTextViewEdited = false
     var isEditingMode = false
     
+    // TextView 생성
     let createTextView: UITextView = {
         var textView = UITextView()
         textView.backgroundColor = UIColor.white
@@ -25,6 +26,26 @@ class CreateViewController: UIViewController {
         textView.font = UIFont.systemFont(ofSize: 17)
         return textView
     }()
+    
+//    // Cell에 UIButton 추가
+//    let categoryButton_1: UIButton = {
+//        let button = UIButton()
+//        button.setTitle("Work", for: .normal)
+//        button.setTitleColor(UIColor.black, for: .normal)
+//        button.backgroundColor = UIColor(named: "CheckColor")
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
+//    
+//    // Cell에 UIButton 추가
+//    let categoryButton_2: UIButton = {
+//        let button = UIButton()
+//        button.setTitle("Life", for: .normal)
+//        button.setTitleColor(UIColor.black, for: .normal)
+//        button.backgroundColor = UIColor(named: "CheckColor")
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,14 +84,25 @@ extension CreateViewController {
     
     private func addSubView() {
         view.addSubview(createTextView)
+//        view.addSubview(categoryButton_1)
+//        view.addSubview(categoryButton_2)
     }
     
     private func autoLayout() {
         NSLayoutConstraint.activate([
+//            categoryButton_1.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
+//            categoryButton_1.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+//            categoryButton_1.trailingAnchor.constraint(equalTo: categoryButton_2.leadingAnchor, constant: -16),
+//            categoryButton_1.bottomAnchor.constraint(equalTo: createTextView.topAnchor, constant: -16),
+//
+//            categoryButton_2.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
+//            categoryButton_2.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
+//            categoryButton_2.bottomAnchor.constraint(equalTo: createTextView.topAnchor, constant: -16),
+            
             createTextView.topAnchor.constraint(equalTo: self.view.topAnchor),
             createTextView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             createTextView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-            createTextView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 16),
+            createTextView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
             createTextView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             createTextView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
@@ -111,6 +143,8 @@ extension CreateViewController {
             // 수정된 메모 내용을 업데이트하고 해당 셀만 리로드
             (self.navigationController?.viewControllers.first as? MainViewController)?.mainTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         }
+        
+        // 수정 모드 종료
         isEditingMode = false
     }
     

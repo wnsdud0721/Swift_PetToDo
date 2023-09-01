@@ -9,6 +9,9 @@ import UIKit
 
 class PhotoViewController: UIViewController {
     
+    // UIRefreshControl 인스턴스 생성
+    let refreshControl = UIRefreshControl()
+    
     // CollectionView 만들기
     var photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -27,6 +30,7 @@ class PhotoViewController: UIViewController {
         configureUI()
         addSubView()
         autoLayout()
+        configureRefreshControl()
     }
 }
 
@@ -41,14 +45,9 @@ extension PhotoViewController {
         navigationItem.largeTitleDisplayMode = .never
         navigationController?.view.tintColor = UIColor(named: "MainColor")
         navigationItem.title = "사진모음"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(moveBackMainVC))
         
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
-    }
-    
-    @objc func moveBackMainVC() {
-        navigationController?.popViewController(animated: true)
     }
     
     // view에 CollectionView 추가
@@ -66,6 +65,53 @@ extension PhotoViewController {
             photoCollectionView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             photoCollectionView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
+    }
+    
+    private func configureRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        
+        // CollectionView에 refreshControl 추가
+        photoCollectionView.refreshControl = refreshControl
+        
+        refreshControl.tintColor = UIColor(named: "CheckColor")
+        refreshControl.attributedTitle = NSAttributedString(string: "당겨서 새로고침", attributes: [.foregroundColor: UIColor(named: "CheckColor")!])
+    }
+    
+    @objc private func refreshData() {
+        // API 호출 및 데이터 업데이트 로직을 구현
+        fetchNewData()
+    }
+    
+    private func fetchNewData() {
+        let imageURLString = "https://api.thecatapi.com/v1/images/search?limit=10"
+        
+        URLSession.shared.dataTask(with: URL(string: imageURLString)!) { data, response, error in
+            if let error = error {
+                print("Error fetching data: \(error)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            do {
+                let images = try JSONDecoder().decode([CatImage].self, from: data)
+                
+                // 0.7초 딜레이
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    
+                    // 새로운 이미지 데이터로 collectionView 갱신
+                    self.photoCollectionView.reloadData()
+                    
+                    // 새로고침 작업 완료 후, 호출
+                    self.refreshControl.endRefreshing()
+                }
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }.resume()
     }
 }
 
