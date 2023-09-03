@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainViewController: UIViewController {
     
@@ -73,28 +74,20 @@ extension MainViewController {
     
     // TableView에 AutoLayout 추가
     private func autoLayout() {
-        NSLayoutConstraint.activate([
-            mainTableView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            mainTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            mainTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            mainTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            mainTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            mainTableView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-        ])
+        
+        // Snapkit을 사용한 경우
+        mainTableView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalTo(view.snp.leading)
+            make.trailing.equalTo(view.snp.trailing)
+            make.bottom.equalTo(view.snp.bottom)
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY)
+        }
     }
     
     // 메모 생성 페이지 이동
     @objc func moveCreateVC() {
-        
-//        let newMemo = MemoItem(text: "", isChecked: false)
-//        var savedMemoItems = UserDefaults.standard.value(forKey: "savedMemos") as? [Data] ?? []
-//        
-//        let encoder = JSONEncoder()
-//        if let encodedMemo = try? encoder.encode(newMemo) {
-//            savedMemoItems.append(encodedMemo)
-//            UserDefaults.standard.set(savedMemoItems, forKey: "savedMemos")
-//        }
-        
         navigationController?.pushViewController(createVC, animated: true)
     }
 

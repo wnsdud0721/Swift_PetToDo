@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainTableViewCell: UITableViewCell {
     
@@ -83,17 +84,32 @@ class MainTableViewCell: UITableViewCell {
     
     // Cell 객체 autoLayout
     private func autoLayout() {
-        let margin: CGFloat = 8
-        NSLayoutConstraint.activate([
-            checkButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            checkButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            checkButton.widthAnchor.constraint(equalToConstant: 20),
-            checkButton.heightAnchor.constraint(equalToConstant: 20),
-            
-            memoLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            memoLabel.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: margin),
-            memoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
-        ])
+        
+        // NSLayoutConstraint을 이용한 경우
+//        let margin: CGFloat = 8
+//        NSLayoutConstraint.activate([
+//            checkButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+//            checkButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+//            checkButton.widthAnchor.constraint(equalToConstant: 20),
+//            checkButton.heightAnchor.constraint(equalToConstant: 20),
+//            
+//            memoLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+//            memoLabel.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: margin),
+//            memoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+//        ])
+        
+        // Snapkit을 이용한 경우
+        checkButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
+            make.width.height.equalTo(20)
+        }
+        
+        memoLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(checkButton.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(-16)
+        }
     }
 
 }

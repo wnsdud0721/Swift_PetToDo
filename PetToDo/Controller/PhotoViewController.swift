@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class PhotoViewController: UIViewController {
     
@@ -57,14 +58,15 @@ extension PhotoViewController {
     
     // CollectionView에 AutoLayout 추가
     private func autoLayout() {
-        NSLayoutConstraint.activate([
-            photoCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            photoCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            photoCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            photoCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            photoCollectionView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            photoCollectionView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-        ])
+        
+        photoCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalTo(view.snp.leading)
+            make.trailing.equalTo(view.snp.trailing)
+            make.bottom.equalTo(view.snp.bottom)
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY)
+        }
     }
     
     private func configureRefreshControl() {
@@ -97,7 +99,7 @@ extension PhotoViewController {
             }
             
             do {
-                let images = try JSONDecoder().decode([CatImage].self, from: data)
+                _ = try JSONDecoder().decode([CatImage].self, from: data)
                 
                 // 0.7초 딜레이
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {

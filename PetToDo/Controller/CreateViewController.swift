@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class CreateViewController: UIViewController {
     
@@ -89,7 +90,7 @@ extension CreateViewController {
     }
     
     private func autoLayout() {
-        NSLayoutConstraint.activate([
+        //NSLayoutConstraint.activate([
 //            categoryButton_1.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
 //            categoryButton_1.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
 //            categoryButton_1.trailingAnchor.constraint(equalTo: categoryButton_2.leadingAnchor, constant: -16),
@@ -99,13 +100,22 @@ extension CreateViewController {
 //            categoryButton_2.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
 //            categoryButton_2.bottomAnchor.constraint(equalTo: createTextView.topAnchor, constant: -16),
             
-            createTextView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            createTextView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            createTextView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-            createTextView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-            createTextView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            createTextView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-        ])
+//            createTextView.topAnchor.constraint(equalTo: self.view.topAnchor),
+//            createTextView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+//            createTextView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+//            createTextView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
+//            createTextView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+//            createTextView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        //])
+        
+        createTextView.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.leading.equalTo(view.snp.leading).offset(16)
+            make.trailing.equalTo(view.snp.trailing).offset(-16)
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY)
+        }
     }
     
     private func configureTextView() {
@@ -191,9 +201,6 @@ extension CreateViewController: UITextViewDelegate {
 
 extension CreateViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-//        if createTextView.text == editingMemoText {
-//            isEditingMode = false
-//        }
         isEditingMode = false
     }
 }
