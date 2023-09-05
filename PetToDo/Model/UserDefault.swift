@@ -14,4 +14,8 @@ struct MemoItem: Codable {
     var isChecked: Bool
 }
 
+struct CatImage: Decodable {
+    let url: String
+}
+
 var loadedMemoItems: [MemoItem] = []

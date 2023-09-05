@@ -22,7 +22,3 @@ extension UIImageView {
         }
     }
 }
-
-struct CatImage: Decodable {
-    let url: String
-}
